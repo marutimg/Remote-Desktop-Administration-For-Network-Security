@@ -1,0 +1,149 @@
+
+package remoteserver;
+
+//import FileServer.*;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+/**
+ * This is the entry class of the server
+ */
+public class ServerInitiator extends JFrame implements ActionListener{
+    //Main server frame
+    public JFrame frame = new JFrame("Server");
+  //public void run()
+  
+    
+    //JPanel p=new JPanel();
+    JMenuBar mm= new JMenuBar();
+    JMenu Remote= new JMenu("remote");
+    JMenuItem me=new JMenuItem("Chat");
+    JMenuItem ft=new JMenuItem("File Tranfer");
+    //JMenuItem cl=new JMenuItem("Control");
+    JMenuItem pr=new JMenuItem("Properties");
+   // me.addActionListener(this);
+   // Remote.add(me);
+
+   // public Font getFont() {
+    //}
+/*    mm.add(Remote);
+ frame.setJMenuBar(mm); 
+  frame.setVisible(true);  
+    
+    add(mm);
+   Remote.add(me);
+
+  */  
+  
+    //JDesktopPane represents the main container that will contain all
+    //connected clients' screens
+    private JDesktopPane desktop = new JDesktopPane();
+
+    public static void main(String args[]){
+  //  ServerInitiator(){ 
+    String port = JOptionPane.showInputDialog("Please enter listening port");
+        new ServerInitiator().initialize(Integer.parseInt(port));
+    }
+
+    public void initialize(int port){
+
+        try {
+            ServerSocket sc = new ServerSocket(port);
+            //Show Server GUI
+            drawGUI();
+            //Listen to server port and accept clients connections
+            while(true){
+                Socket client = sc.accept();
+                System.out.println("New client Connected to the server");
+                //Per each client create a ClientHandler
+                new ClientHandler(client,desktop);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /*
+     * Draws the main server GUI
+     */
+    public void drawGUI(){
+            frame.add(desktop,BorderLayout.CENTER);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            //Show the frame in a maximized state
+            frame.setExtendedState(frame.getExtendedState()|JFrame.MAXIMIZED_BOTH);
+            frame.setVisible(true);
+     mm.add(Remote);
+     me.addActionListener(this);
+    Remote.add(me);
+    add(mm);
+    ft.addActionListener(this);
+    Remote.add(ft);
+   // add(ft);
+    
+    Remote.add(pr);
+    pr.addActionListener(this);
+   // add(pr);
+   //Remote.add(cl);
+    //cl.addActionListener(this);
+     
+   // add(cl);
+    
+   //Remote.add(me);
+ frame.setJMenuBar(mm); 
+  frame.setVisible(true);  
+    ;
+
+    }
+
+   /// private void add(JMenuBar m) {
+     //   throw new UnsupportedOperationException("Not yet implemented");
+    //}
+ public void actionPerformed(ActionEvent ae)
+       {
+        try
+         {
+           if(ae.getSource()==me)
+           {
+         ChatServer s=new ChatServer();
+         }
+           else if(ae.getSource()==ft)
+           {
+         // Socket s=new Socket("127.0.0.1",1001);
+          //System.out.println(s.getLocalPort());
+          SimpleFileServer fs= new SimpleFileServer();
+      //      int port = 0;
+           // String fileName = null;
+          // FileServer fs = new FileServer();
+           }
+           
+           else if(ae.getSource()==pr)
+           {
+           DateClient d=new DateClient();
+           }
+      //     else if(ae.getSource()==cl)
+        //   {
+           // String ip= Syste
+          // UserInterface u=new UserInterface("Remote");
+           //}
+        }   
+        catch(Exception e)
+        {
+            
+        }}
+    //public void actionPerformed(ActionEvent e) {
+    //}
+
+   
+}
